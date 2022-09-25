@@ -7,5 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  background-color: ${props => props.theme.colors.primary_bgc};
+  background-image: url(https://thumbs.dreamstime.com/z/contact-icon-isolated-abstract-blue-background-illustration-design-contact-icon-abstract-blue-background-illustration-design-167324468.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
