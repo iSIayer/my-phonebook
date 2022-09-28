@@ -4,7 +4,7 @@ import homeBg from 'components/img/homeBackground.jpg';
 const Main = styled.main`
   display: flex;
   justify-content: center;
-  min-height: calc(100vh - 56px - 62px);
+  min-height: calc(100vh - 56px - 42px);
   background: linear-gradient(
       335deg,
       rgba(0, 0, 0, 0.5) 0%,
