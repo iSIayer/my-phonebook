@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { phonebookApi } from 'api/phonebookApi';
-import { contactsSlice } from './contactsSlice';
-import { persistedReducer } from './contacts';
+import { phonebookApi } from 'components/api/phonebookApi';
+import { contactsSlice } from 'redux/contacts/contactsSlice';
+import authReducer from './auth/auth-slice';
 import storage from 'redux-persist/lib/storage';
 import {
   persistStore,
+  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -13,16 +14,26 @@ import {
   REGISTER,
 } from 'redux-persist';
 
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['token'],
+};
+
 export const store = configureStore({
   reducer: {
-    contacts: persistedReducer,
+    auth: persistReducer(authPersistConfig, authReducer),
+    contacts: contactsSlice.reducer,
+    [phonebookApi.reducerPath]: phonebookApi.reducer,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
+  middleware: getDefaultMiddleware => [
+    ...getDefaultMiddleware({
       serializableCheck: {
-        ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+    phonebookApi.middleware,
+  ],
 });
 
 export const persistor = persistStore(store);

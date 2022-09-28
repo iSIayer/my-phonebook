@@ -11,5 +11,9 @@ export const contactsSlice = createSlice({
     },
   },
 });
+
 export const { filter } = contactsSlice.actions;
+
+//Selectors
+
 export const getFilter = state => state.contacts.filter;

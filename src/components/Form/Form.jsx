@@ -1,111 +1,89 @@
+import { useState } from 'react';
 import {
   useGetContactByNameQuery,
   useAddContactMutation,
-} from 'api/phonebookApi';
-import PropTypes from 'prop-types';
-import { nanoid } from 'nanoid';
-import { Formik, ErrorMessage } from 'formik';
-import {
-  ContactForm,
-  ContactLabel,
-  ContactField,
-  ErrorText,
-  Button,
-  ButtonIcon,
-} from './Form.styled';
-import * as yup from 'yup';
+} from 'components/api/phonebookApi';
+import PhoneInput from 'react-phone-number-input';
+import { LineWave } from 'react-loader-spinner';
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
+import 'react-phone-number-input/style.css';
+import Input from 'components/Input';
+import { FormContainer, Button } from './Form.styled';
 
-const onValidate = yup.object().shape({
-  name: yup.string().min(2).required(),
-  number: yup.string().length(7).required(),
-});
-
-export const Form = () => {
+const Form = () => {
+  const [addContact, { isLoading }] = useAddContactMutation();
   const { data: items } = useGetContactByNameQuery();
-  const [addContact] = useAddContactMutation();
 
-  const normalizedName = str => {
-    const normalizedName = str
-      .split(' ')
-      .map(item => item[0].toUpperCase() + item.slice(1))
-      .join(' ');
-    return normalizedName;
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const handleInputChange = e => {
+    setName(e.currentTarget.value);
   };
 
-  const normalizedNumber = str => {
-    const normalizedNumber =
-      str[0] + str[1] + str[2] + '-' + str[3] + str[4] + '-' + str[5] + str[6];
-    return normalizedNumber;
-  };
-
-  const validateContact = data => {
-    const normalizedValue = data.name.toLowerCase();
-    const result = items.find(item =>
-      item.name.toLowerCase().includes(normalizedValue)
-    );
-    return result;
-  };
-
-  const handleSubmit = (values, { resetForm }) => {
-    const newName = {
-      id: nanoid(),
-      name: normalizedName(values.name),
-      number: normalizedNumber(values.number),
-    };
-    if (validateContact(newName)) {
-      alert(`${newName.name} already exist`);
-      return;
-    } else {
-      addContact(newName);
+  const handleSubmit = e => {
+    if (number.length > 13) {
+      return alert('Введіть корректний номер телефону!');
     }
-    resetForm();
+
+    const checkName = items.find(el => el.name === name);
+
+    checkName === undefined
+      ? addContact({ name, number })
+      : toast.error(`${name} вже є в телефонній книзі!.`, {
+          position: toast.POSITION.TOP_CENTER,
+          theme: 'dark',
+        });
+
+    e.preventDefault();
+    reset();
   };
 
-  // console.log(handleSubmit);
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
+
   return (
-    <Formik
-      initialValues={{ name: '', number: '' }}
-      validationSchema={onValidate}
-      onSubmit={handleSubmit}
+    <motion.div
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.9, delay: 0.5 }}
     >
-      {props => (
-        <ContactForm>
-          <ContactLabel>
-            Name:
-            <ContactField
-              type="text"
-              name="name"
-              onChange={props.handleChange}
-              value={props.values.name}
-            />
-            <ErrorMessage
-              name="name"
-              render={msg => <ErrorText>{msg}</ErrorText>}
-            />
-          </ContactLabel>
-          <ContactLabel>
-            Number:
-            <ContactField
-              type="tel"
-              name="number"
-              onChange={props.handleChange}
-              value={props.values.number}
-            />
-            <ErrorMessage
-              name="number"
-              render={msg => <ErrorText>{msg}</ErrorText>}
-            />
-          </ContactLabel>
-          <Button type="submit">
-            <ButtonIcon />
-            Add contact
-          </Button>
-        </ContactForm>
-      )}
-    </Formik>
+      <FormContainer onSubmit={handleSubmit}>
+        <Input
+          onChange={handleInputChange}
+          title="Моя телефонна книга"
+          type="text"
+          name="name"
+          value={name}
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          placeholder="Тарас Шевченко"
+        />
+        <PhoneInput
+          defaultCountry="UA"
+          onChange={number => {
+            setNumber(number);
+          }}
+          region="Europe"
+          title="Number"
+          type="tel"
+          name="number"
+          value={number}
+          placeholder="Введіть номер контакту"
+          autoComplete="off"
+          international
+          className="inputPhone"
+          maxLength="16"
+        />
+        <Button disabled={isLoading} onSubmit={handleSubmit}>
+          {isLoading && <LineWave height="16" width="16" color="#fff" />}
+          Додати контакт
+        </Button>
+      </FormContainer>
+    </motion.div>
   );
 };
 
-Form.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-};
+export default Form;

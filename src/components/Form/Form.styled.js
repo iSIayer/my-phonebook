@@ -1,74 +1,36 @@
 import styled from 'styled-components';
-import { Form, Field } from 'formik';
-import { RiContactsBookFill } from 'react-icons/ri';
 
-export const ContactForm = styled(Form)`
-  width: 100%;
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-`;
+  padding: 20px 0;
+  width: 450px;
+  border-radius: 7px;
+  color: #000;
+  background-color: rgba(244, 244, 246, 0.4);
+  box-shadow: 2px 2px 23px 9px rgba(0, 0, 0, 0.39);
 
-export const ContactLabel = styled.label`
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 16rem;
-  margin-bottom: 25px;
-  color: ${props => props.theme.colors.green};
-`;
-
-export const ContactField = styled(Field)`
-  min-width: 300px;
-  padding-left: 20px;
-  height: 40px;
-  font-family: inherit;
-  border: none;
-  outline: none;
-  border-radius: 0.5rem;
-  box-shadow: inset 0.2rem 0.2rem 0.5rem #c8d0e7;
-  background: none;
-  :focus {
-    outline: none;
-    box-shadow: 0.3rem 0.3rem 0.6rem ${props => props.theme.colors.shade},
-      -0.2rem -0.2rem 0.5rem ${props => props.theme.colors.blue};
+  @media screen and (max-width: 479px) {
+    max-width: 300px;
   }
 `;
 
-export const ErrorText = styled.p`
-  font-weight: ${props => props.theme.fontWeight.light};
-  font-size: 13px;
-  color: red;
-`;
-
-export const Button = styled.button`
-  width: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 0;
+export const Button = styled.button.attrs(() => ({
+  type: 'submit',
+}))`
+  position: relative;
+  margin-top: 20px;
+  padding: 5px 10px;
+  display: inline-flex;
+  border-radius: 5px;
   border: none;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
-  background-color: ${props => props.theme.colors.green};
   cursor: pointer;
-  transition: all 0.7s ease;
-  color: ${props => props.theme.colors.shade};
+  transition: color 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 500ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    background-color: ${props => props.theme.colors.blue};
-    color: inherit;
+    background-color: #212529;
+    color: #fff;
   }
-  &:active {
-    box-shadow: inset 0.2rem 0.2rem 1rem #5b0eeb,
-      inset -0.2rem -0.2rem 1rem #8abdff;
-  }
-`;
-
-export const ButtonIcon = styled(RiContactsBookFill)`
-  width: 30px;
-  height: 30px;
-  margin-right: 20px;
 `;

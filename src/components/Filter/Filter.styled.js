@@ -1,25 +1,29 @@
 import styled from 'styled-components';
+import Container from 'components/Container';
+
+export const SearchContainer = styled(Container)`
+  margin: 20px 0;
+  padding: 10px 0;
+  border-radius: 7px;
+  width: 450px;
+  color: #000;
+  background-color: rgba(244, 244, 246, 0.4);
+  box-shadow: 2px 2px 23px 9px rgba(0, 0, 0, 0.39);
+  @media screen and (max-width: 479px) {
+    max-width: 300px;
+  }
+`;
+
+export const SearchTitle = styled.h2`
+  font-size: 16px;
+  text-transform: uppercase;
+`;
 
 export const Input = styled.input`
-  box-sizing: border-box;
-  width: 300px;
-  height: 40px;
-  margin-bottom: 20px;
-  padding-left: 20px;
-  font-family: inherit;
+  text-align: center;
+  margin-top: 10px;
+  padding: 5px;
   border: none;
-  outline: none;
-  border-radius: 0.5rem;
-  box-shadow: inset 0.3rem 0.2rem 0.5rem;
-  background: none;
-  color: ${props => props.theme.colors.accent};
-  ::placeholder {
-    color: ${props => props.theme.colors.green};
-  }
-
-  :focus {
-    outline: none;
-    box-shadow: 0.3rem 0.3rem 0.6rem,
-      -0.2rem -0.2rem 0.5rem ${props => props.theme.colors.white};
-  }
+  border-radius: 5px;
+  opacity: 0.4;
 `;

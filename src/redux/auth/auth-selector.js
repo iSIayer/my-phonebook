@@ -1,12 +1,13 @@
-// Селекторы состояния
+const getIsLoggedIn = state => state.auth.isLoggedIn;
 
-const getIsLoggedin = state => state.auth.isLoggedIn;
-const getUserName = state => state.auth.user.name;
+const getUsername = state => state.auth.user.name;
+
 const getToken = state => state.auth.token;
 
 const authSelectors = {
-  getIsLoggedin,
-  getUserName,
+  getIsLoggedIn,
+  getUsername,
   getToken,
 };
+
 export default authSelectors;

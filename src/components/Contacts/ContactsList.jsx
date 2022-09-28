@@ -1,58 +1,76 @@
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   useGetContactByNameQuery,
   useDeleteContactMutation,
-} from 'api/phonebookApi';
-import PropTypes from 'prop-types';
+} from 'components/api/phonebookApi';
+import { getFilter } from 'redux/contacts/contactsSlice';
+import Table from 'react-bootstrap/Table';
+import { Loader } from 'components/Loader/Loader';
 import {
-  ContactsListItem,
-  ContactsListButton,
-  ContactsListIcon,
+  ContainerList,
+  Title,
+  ContactListButton,
+  AttentionText,
 } from './ContactsList.styled';
-import { Loader } from 'components/Spinner/Loader';
+import { motion } from 'framer-motion';
+import { MdDeleteSweep } from 'react-icons/md';
 
-export const ContactsList = () => {
-  const filter = useSelector(state => state.filter.value);
-  const { data: items, isLoading } = useGetContactByNameQuery();
+const ContactsList = () => {
+  const filter = useSelector(getFilter);
+  const { data = [], isLoading } = useGetContactByNameQuery();
   const [onClickDelete] = useDeleteContactMutation();
 
   const dataFilter = () => {
-    if (items) {
-      const normalizedValue = filter.toLowerCase();
-      const filteredArray = items.filter(option =>
-        option.name.toLowerCase().includes(normalizedValue)
-      );
-      return filteredArray;
-    }
+    return data.filter(item => item.name.toLowerCase().includes(filter));
   };
 
+  let contacts = filter === '' ? data : dataFilter();
+
   return (
-    <>
-      {isLoading && <Loader />}
-      <ul>
-        {items &&
-          dataFilter().map(({ id, name, phone }) => {
-            return (
-              <ContactsListItem key={id}>
-                {name}: {phone}
-                <ContactsListButton
-                  onClick={() => {
-                    onClickDelete(id);
-                  }}
-                >
-                  <ContactsListIcon />
-                  Delete
-                </ContactsListButton>
-              </ContactsListItem>
-            );
-          })}
-      </ul>
-    </>
+    <motion.div
+      initial={{ y: 300, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.9, delay: 0.6 }}
+    >
+      <ContainerList>
+        <Title>Контакти</Title>
+        {isLoading && <Loader />}
+        {data.length > 0 ? (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Ім'я контакту</th>
+                <th>Номер контакту</th>
+                <th>Видалити</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contacts.map(({ id, name, number }) => (
+                <tr key={id} className="text">
+                  <td>{name}</td>
+                  <td>{number}</td>
+                  <td>
+                    <ContactListButton onClick={() => onClickDelete(id)}>
+                      <MdDeleteSweep size={20} />
+                    </ContactListButton>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        ) : (
+          <AttentionText>У Вас ще немає контактів :(</AttentionText>
+        )}
+      </ContainerList>
+    </motion.div>
   );
 };
 
+export default ContactsList;
+
 ContactsList.propTypes = {
   name: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   onClickDelete: PropTypes.func.isRequired,
 };

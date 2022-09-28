@@ -1,8 +1,10 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,16 +14,26 @@ code {
     monospace;
 }
 
-ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.text {
+  vertical-align: baseline;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-style: italic;
 }
 
-h1,
-h2,
-h3,
-p {
-  padding: 0;
-  margin: 0;
+.inputPhone {
+  width: 280px;
+  background-color: rgba(244, 244, 246, 0.4);
+  box-shadow: 2px 2px 23px 9px rgba(0, 0, 0, 0.39);
+  border-radius: 5px;
+}
+
+.text-footer {
+  color: rgb(186, 186, 183);
+}
+
+.color-nav,
+.color-footer {
+  background-color: rgb(65, 94, 94);
 }
