@@ -22,8 +22,8 @@ const HomePage = () => {
       </Title>
       {!isLoggedIn && (
         <motion.div
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ x: -340, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.9, delay: 3.5 }}
         >
           <Button
