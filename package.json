@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-08-phonebook",
+  "name": "my-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://isiayer.github.io/goit-react-hw-08-phonebook/",
+  "homepage": "https://isiayer.github.io/my-phonebook/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.3",
