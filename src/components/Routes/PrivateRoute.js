@@ -7,3 +7,5 @@ export const PrivateRoute = ({ children }) => {
 
   return isLoggedIn ? children : <Navigate to="/login" />;
 };
+
+// Private properties

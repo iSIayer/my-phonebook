@@ -6,3 +6,5 @@ export const PublicRoute = ({ children }) => {
   const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
   return !isLoggedIn ? children : <Navigate to="/contacts" />;
 };
+
+// Public properties
